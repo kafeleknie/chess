@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div id="blackPieces" class="bar"></div>
+      <div id="playingBoard"></div>
+      <div id="whitePieces" class="bar"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      const piecesImg = {
+        white: {
+          R: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Chess_rlt45.svg/1024px-Chess_rlt45.svg.png",
+          N: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Chess_nlt45.svg/1024px-Chess_nlt45.svg.png",
+          B: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Chess_blt45.svg/1024px-Chess_blt45.svg.png",
+          Q: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Chess_qlt45.svg/1024px-Chess_qlt45.svg.png",
+          K: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Chess_klt45.svg/1024px-Chess_klt45.svg.png",
+          P: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/1024px-Chess_plt45.svg.png",
+        },
+        black: {
+          R: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Chess_rdt45.svg/1024px-Chess_rdt45.svg.png",
+          N: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Chess_ndt45.svg/1024px-Chess_ndt45.svg.png",
+          B: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Chess_bdt45.svg/1024px-Chess_bdt45.svg.png",
+          Q: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Chess_qdt45.svg/1024px-Chess_qdt45.svg.png",
+          K: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Chess_kdt45.svg/1024px-Chess_kdt45.svg.png",
+          P: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/1024px-Chess_pdt45.svg.png",
+        },
+      };
+
+      const displayMaterial = () => {
+        const blackPieces = document.querySelector("#blackPieces");
+        const whitePieces = document.querySelector("#whitePieces");
+
+        whitePieces.innerHTML = "";
+        blackPieces.innerHTML = "";
+
+        for (const item in piecesCount.white) {
+          let img = document.createElement("img");
+          img.setAttribute("src", piecesImg.white[item]);
+          whitePieces.appendChild(img);
+          let text = document.createElement("p");
+          text.textContent = piecesCount.white[item];
+          whitePieces.appendChild(text);
+
+          let img2 = document.createElement("img");
+          img2.setAttribute("src", piecesImg.black[item]);
+          blackPieces.appendChild(img2);
+          let text2 = document.createElement("p");
+          text2.textContent = piecesCount.black[item];
+          blackPieces.appendChild(text2);
+        }
+      };
+
+      const display = () => {
+        const playingBoard = document.querySelector("#playingBoard");
+        playingBoard.innerHTML = "";
+
+        let currentMoves = [];
+
+        for (let y = 0; y <= 7; y++) {
+          let row = document.createElement("div");
+          row.classList.add("row");
+
+          for (let x = 0; x <= 7; x++) {
+            let col = document.createElement("div");
+            if (board[y][x]) {
+              let img = document.createElement("img");
+              img.setAttribute(
+                "src",
+                piecesImg[board[y][x].color][board[y][x].id]
+              );
+              col.appendChild(img);
+            }
+            col.classList.add("col");
+            if (y % 2 !== 0 && x % 2 === 0) {
+              col.style.backgroundColor = "#D28C45";
+            } else if (y % 2 === 0 && x % 2 !== 0) {
+              col.style.backgroundColor = "#D28C45";
+            }
+            col.addEventListener("click", (e) => {
+              e.target.style.backgroundColor = "#e88989";
+              currentMoves.push({ x: x, y: y });
+              if (currentMoves.length > 1) {
+                move(currentMoves[0], currentMoves[1]);
+                currentMoves = [];
+                display();
+              }
+            });
+
+            row.appendChild(col);
+          }
+          playingBoard.appendChild(row);
+        }
+        document.querySelector(".container").style.backgroundColor =
+          turn === "white" ? "#cccaca" : "#403e3e";
+        displayMaterial();
+      };
+      display();
+    </script>
+  </body>
+</html>
