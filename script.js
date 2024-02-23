@@ -45,13 +45,11 @@ let board = [
   ],
 ];
 
-
-
 let displayedBoard = JSON.parse(JSON.stringify(board));
 
 const kingsPositions = {
   white: { x: 4, y: 7 },
-  black: { x: 4, y: 0 }
+  black: { x: 4, y: 0 },
 };
 
 const piecesCount = {
@@ -87,7 +85,7 @@ const validateMove = (id, from, to) => {
       } else if (
         from.x === to.x &&
         !board[from.y][from.x].moved &&
-        from.y === to.y + (direction * 2)
+        from.y === to.y + direction * 2
       ) {
         if (!board[to.y][to.x] && !board[to.y + direction][to.x]) return true;
       }
@@ -257,7 +255,8 @@ const isAttacked = (position) => {
           else if (board[y][x]?.id === "B" || board[y][x]?.id === "Q")
             return true;
           else if (i === 1 && board[y][x]?.id === "K") return true;
-          else if (i === 1 && board[y][x]?.id === "P" && turn === 'white') return true;
+          else if (i === 1 && board[y][x]?.id === "P" && turn === "white")
+            return true;
           else topCorners.left = true;
         }
       }
@@ -270,7 +269,8 @@ const isAttacked = (position) => {
           else if (board[y][x]?.id === "B" || board[y][x]?.id === "Q")
             return true;
           else if (i === 1 && board[y][x]?.id === "K") return true;
-          else if (i === 1 && board[y][x]?.id === "P" && turn === 'white') return true;
+          else if (i === 1 && board[y][x]?.id === "P" && turn === "white")
+            return true;
           else topCorners.right = true;
         }
       }
@@ -286,7 +286,8 @@ const isAttacked = (position) => {
           else if (board[y][x]?.id === "B" || board[y][x]?.id === "Q")
             return true;
           else if (i === 1 && board[y][x]?.id === "K") return true;
-          else if (i === 1 && board[y][x]?.id === "P" && turn === 'black') return true;
+          else if (i === 1 && board[y][x]?.id === "P" && turn === "black")
+            return true;
           else bottomCorners.left = true;
         }
       }
@@ -299,7 +300,8 @@ const isAttacked = (position) => {
           else if (board[y][x]?.id === "B" || board[y][x]?.id === "Q")
             return true;
           else if (i === 1 && board[y][x]?.id === "K") return true;
-          else if (i === 1 && board[y][x]?.id === "P" && turn === 'black') return true;
+          else if (i === 1 && board[y][x]?.id === "P" && turn === "black")
+            return true;
           else bottomCorners.right = true;
         }
       }
@@ -310,13 +312,13 @@ const isAttacked = (position) => {
   if (x >= 0) {
     y = position.y - 1;
     if (y >= 0) {
-      if (board[y][x]?.id === 'N' && board[y][x]?.color !== turn) {
+      if (board[y][x]?.id === "N" && board[y][x]?.color !== turn) {
         return true;
       }
     }
     y = position.y + 1;
     if (y <= 7) {
-      if (board[y][x]?.id === 'N' && board[y][x]?.color !== turn) {
+      if (board[y][x]?.id === "N" && board[y][x]?.color !== turn) {
         return true;
       }
     }
@@ -326,13 +328,13 @@ const isAttacked = (position) => {
   if (x <= 7) {
     y = position.y - 1;
     if (y >= 0) {
-      if (board[y][x]?.id === 'N' && board[y][x]?.color !== turn) {
+      if (board[y][x]?.id === "N" && board[y][x]?.color !== turn) {
         return true;
       }
     }
     y = position.y + 1;
     if (y <= 7) {
-      if (board[y][x]?.id === 'N' && board[y][x]?.color !== turn) {
+      if (board[y][x]?.id === "N" && board[y][x]?.color !== turn) {
         return true;
       }
     }
@@ -342,13 +344,13 @@ const isAttacked = (position) => {
   if (y >= 0) {
     x = position.x - 1;
     if (x >= 0) {
-      if (board[y][x]?.id === 'N' && board[y][x]?.color !== turn) {
+      if (board[y][x]?.id === "N" && board[y][x]?.color !== turn) {
         return true;
       }
     }
     x = position.x + 1;
     if (x <= 7) {
-      if (board[y][x]?.id === 'N' && board[y][x]?.color !== turn) {
+      if (board[y][x]?.id === "N" && board[y][x]?.color !== turn) {
         return true;
       }
     }
@@ -358,13 +360,13 @@ const isAttacked = (position) => {
   if (y <= 7) {
     x = position.x - 1;
     if (x >= 0) {
-      if (board[y][x]?.id === 'N' && board[y][x]?.color !== turn) {
+      if (board[y][x]?.id === "N" && board[y][x]?.color !== turn) {
         return true;
       }
     }
     x = position.x + 1;
     if (x <= 7) {
-      if (board[y][x]?.id === 'N' && board[y][x]?.color !== turn) {
+      if (board[y][x]?.id === "N" && board[y][x]?.color !== turn) {
         return true;
       }
     }
@@ -380,7 +382,13 @@ const isCheckmate = () => {
         for (let fieldY = 0; fieldY <= 7; fieldY++) {
           for (let fieldX = 0; fieldX <= 7; fieldX++) {
             let piece = board[pieceY][pieceX];
-            if (validateMove(piece.id, { x: pieceX, y: pieceY }, { y: fieldY, x: fieldX })) {
+            if (
+              validateMove(
+                piece.id,
+                { x: pieceX, y: pieceY },
+                { y: fieldY, x: fieldX }
+              )
+            ) {
               if (piece.id === "K") {
                 if (!isAttacked({ x: fieldX, y: fieldY })) {
                   board[fieldY][fieldX] = piece;
@@ -402,8 +410,7 @@ const isCheckmate = () => {
     }
   }
   return true;
-}
-
+};
 
 const move = (from, to) => {
   const piece = board[from.y][from.x];
@@ -415,8 +422,8 @@ const move = (from, to) => {
       board[from.y][from.x] = false;
       piece.moved = true;
 
-      if (piece.id === 'P') {
-        if (turn === 'white') {
+      if (piece.id === "P") {
+        if (turn === "white") {
           if (to.y === 0) {
             piece.id = prompt();
             piecesCount.white.P--;
@@ -444,9 +451,11 @@ const move = (from, to) => {
         if (deadPiece) piecesCount[turn][deadPiece.id]--;
         displayedBoard = JSON.parse(JSON.stringify(board));
 
-        if (isAttacked(kingsPositions[turn])) if (isCheckmate()) alert('MAT');
+        if (isAttacked(kingsPositions[turn]))
+          if (isCheckmate()) {
+            document.querySelector("#endScreen").style.visibility = "visible";
+          }
       }
     } else console.log("invalid move");
   } else console.log("not your piece");
 };
-

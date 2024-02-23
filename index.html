@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div id="endScreen">
+      <h1>CHECKMATE</h1>
+      <button id="reset">reset</button>
+    </div>
+
     <div class="container">
       <div id="blackPieces" class="bar"></div>
       <div id="playingBoard"></div>
@@ -15,6 +20,10 @@
 
     <script src="script.js"></script>
     <script>
+      document.querySelector("button").addEventListener("click", () => {
+        location.reload();
+      });
+
       const piecesImg = {
         white: {
           R: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Chess_rlt45.svg/1024px-Chess_rlt45.svg.png",
