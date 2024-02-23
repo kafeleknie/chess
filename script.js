@@ -45,6 +45,71 @@ let board = [
   ],
 ];
 
+// let board = [
+//   [
+//     { id: "R", color: "black", moved: false },
+//     { id: "N", color: "black", moved: false },
+//     { id: "B", color: "black", moved: false },
+//     { id: "Q", color: "black", moved: false },
+//     false,
+//     { id: "B", color: "black", moved: false },
+//     false,
+//     { id: "R", color: "black", moved: false },
+//   ],
+//   [
+//     { id: "P", color: "black", moved: false },
+//     { id: "P", color: "black", moved: false },
+//     { id: "P", color: "black", moved: false },
+//     { id: "P", color: "black", moved: false },
+//     { id: "N", color: "black", moved: true },
+//     { id: "P", color: "black", moved: false },
+//     { id: "P", color: "black", moved: false },
+//     { id: "P", color: "black", moved: false },
+//   ],
+//   [false, false, false, false, false, false, false, false],
+//   [
+//     false,
+//     false,
+//     false,
+//     { id: "K", color: "white", moved: true },
+//     { id: "P", color: "black", moved: true },
+//     { id: "K", color: "black", moved: true },
+//     false,
+//     false,
+//   ],
+//   [
+//     false,
+//     false,
+//     false,
+//     { id: "P", color: "white", moved: true },
+//     false,
+//     false,
+//     false,
+//     false,
+//   ],
+//   [false, false, false, false, false, false, false, false],
+//   [
+//     { id: "P", color: "white", moved: false },
+//     { id: "P", color: "white", moved: false },
+//     { id: "P", color: "white", moved: false },
+//     false,
+//     { id: "P", color: "white", moved: false },
+//     { id: "P", color: "white", moved: false },
+//     { id: "P", color: "white", moved: false },
+//     { id: "P", color: "white", moved: false },
+//   ],
+//   [
+//     { id: "R", color: "white", moved: false },
+//     { id: "N", color: "white", moved: false },
+//     { id: "B", color: "white", moved: false },
+//     { id: "Q", color: "white", moved: false },
+//     false,
+//     { id: "B", color: "white", moved: false },
+//     { id: "N", color: "white", moved: false },
+//     { id: "R", color: "white", moved: false },
+//   ],
+// ];
+
 let displayedBoard = JSON.parse(JSON.stringify(board));
 
 const kingsPositions = {
@@ -157,7 +222,7 @@ const validateMove = (id, from, to) => {
       return false;
 
     case "K":
-      if (Math.abs(from.x - to.x) === 1 || Math.abs(from.y - to.y) === 1) {
+      if (Math.abs(from.x - to.x) <= 1 && Math.abs(from.y - to.y) <= 1) {
         if (board[to.y][to.x]?.color !== turn) return true;
       } else if (!board[from.y][from.x].moved && !Math.abs(from.y - to.y)) {
         if (from.x - to.x === 2 && !board[from.y][0].moved) {
@@ -391,8 +456,7 @@ const isCheckmate = () => {
             ) {
               if (piece.id === "K") {
                 if (!isAttacked({ x: fieldX, y: fieldY })) {
-                  board[fieldY][fieldX] = piece;
-                  board[pieceY][pieceX] = false;
+                  return false;
                 }
               } else {
                 board[fieldY][fieldX] = piece;
@@ -403,6 +467,41 @@ const isCheckmate = () => {
                 return false;
               }
               board = JSON.parse(JSON.stringify(displayedBoard));
+            }
+          }
+        }
+      }
+    }
+  }
+  return true;
+};
+
+const isPat = () => {
+  for (let pieceY = 0; pieceY <= 7; pieceY++) {
+    for (let pieceX = 0; pieceX <= 7; pieceX++) {
+      if (board[pieceY][pieceX] && board[pieceY][pieceX]?.color === turn) {
+        for (let fieldY = 0; fieldY <= 7; fieldY++) {
+          for (let fieldX = 0; fieldX <= 7; fieldX++) {
+            let piece = board[pieceY][pieceX];
+            if (
+              validateMove(
+                piece.id,
+                { x: pieceX, y: pieceY },
+                { y: fieldY, x: fieldX }
+              )
+            ) {
+              if (
+                (piece.id === "K" && !isAttacked({ y: fieldY, x: fieldX })) ||
+                piece.id !== "K"
+              ) {
+                board[fieldY][fieldX] = piece;
+                board[pieceY][pieceX] = false;
+                if (!isAttacked(kingsPositions[turn])) {
+                  board = JSON.parse(JSON.stringify(displayedBoard));
+                  return false;
+                }
+                board = JSON.parse(JSON.stringify(displayedBoard));
+              }
             }
           }
         }
@@ -451,11 +550,16 @@ const move = (from, to) => {
         if (deadPiece) piecesCount[turn][deadPiece.id]--;
         displayedBoard = JSON.parse(JSON.stringify(board));
 
-        if (isAttacked(kingsPositions[turn]))
+        if (isAttacked(kingsPositions[turn])) {
           if (isCheckmate()) {
+            document.querySelector("h1").textContent = "CHECKMATE";
             document.querySelector("#endScreen").style.visibility = "visible";
           }
+        } else if (isPat()) {
+          document.querySelector("h1").textContent = "PAT";
+          document.querySelector("#endScreen").style.visibility = "visible";
+        }
       }
-    } else console.log("invalid move");
-  } else console.log("not your piece");
+    }
+  }
 };
