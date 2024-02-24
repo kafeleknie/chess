@@ -511,6 +511,59 @@ const isPat = () => {
   return true;
 };
 
+const promotePawn = (color, position) => {
+  const container = document.querySelector("#promotePawnWindow");
+  container.style.visibility = "visible";
+  const box = document.querySelector("#box");
+  let img = document.createElement("img");
+  img.setAttribute("src", piecesImg[color].Q);
+  img.addEventListener("click", () => {
+    let piece = board[position.y][position.x];
+    piece.id = "Q";
+    piecesCount[color].P--;
+    piecesCount[color][piece.id]++;
+    container.style.visibility = "hidden";
+    display();
+  });
+  box.appendChild(img);
+
+  img = document.createElement("img");
+  img.setAttribute("src", piecesImg[color].R);
+  img.addEventListener("click", () => {
+    let piece = board[position.y][position.x];
+    piece.id = "R";
+    piecesCount[color].P--;
+    piecesCount[color][piece.id]++;
+    container.style.visibility = "hidden";
+    display();
+  });
+  box.appendChild(img);
+
+  img = document.createElement("img");
+  img.setAttribute("src", piecesImg[color].N);
+  img.addEventListener("click", () => {
+    let piece = board[position.y][position.x];
+    piece.id = "N";
+    piecesCount[color].P--;
+    piecesCount[color][piece.id]++;
+    container.style.visibility = "hidden";
+    display();
+  });
+  box.appendChild(img);
+
+  img = document.createElement("img");
+  img.setAttribute("src", piecesImg[color].B);
+  img.addEventListener("click", () => {
+    let piece = board[position.y][position.x];
+    piece.id = "B";
+    piecesCount[color].P--;
+    piecesCount[color][piece.id]++;
+    container.style.visibility = "hidden";
+    display();
+  });
+  box.appendChild(img);
+};
+
 const move = (from, to) => {
   const piece = board[from.y][from.x];
   const deadPiece = JSON.parse(JSON.stringify(board[to.y][to.x]));
@@ -524,15 +577,11 @@ const move = (from, to) => {
       if (piece.id === "P") {
         if (turn === "white") {
           if (to.y === 0) {
-            piece.id = prompt();
-            piecesCount.white.P--;
-            piecesCount.white[piece.id]++;
+            promotePawn("white", { y: 0, x: to.x });
           }
         } else {
           if (to.y === 7) {
-            piece.id = prompt();
-            piecesCount.black.P--;
-            piecesCount.black[piece.id]++;
+            promotePawn("black", { y: 7, x: to.x });
           }
         }
       }
@@ -544,7 +593,6 @@ const move = (from, to) => {
 
       if (isAttacked(kingsPositions[turn])) {
         board = JSON.parse(JSON.stringify(displayedBoard));
-        console.log(`${turn} king is attacked`);
       } else {
         turn = turn === "white" ? "black" : "white";
         if (deadPiece) piecesCount[turn][deadPiece.id]--;
