@@ -523,6 +523,7 @@ const promotePawn = (color, position) => {
     piecesCount[color].P--;
     piecesCount[color][piece.id]++;
     container.style.visibility = "hidden";
+    displayedBoard = JSON.parse(JSON.stringify(board));
     display();
   });
   box.appendChild(img);
@@ -535,6 +536,7 @@ const promotePawn = (color, position) => {
     piecesCount[color].P--;
     piecesCount[color][piece.id]++;
     container.style.visibility = "hidden";
+    displayedBoard = JSON.parse(JSON.stringify(board));
     display();
   });
   box.appendChild(img);
@@ -547,6 +549,7 @@ const promotePawn = (color, position) => {
     piecesCount[color].P--;
     piecesCount[color][piece.id]++;
     container.style.visibility = "hidden";
+    displayedBoard = JSON.parse(JSON.stringify(board));
     display();
   });
   box.appendChild(img);
@@ -559,6 +562,7 @@ const promotePawn = (color, position) => {
     piecesCount[color].P--;
     piecesCount[color][piece.id]++;
     container.style.visibility = "hidden";
+    displayedBoard = JSON.parse(JSON.stringify(board));
     display();
   });
   box.appendChild(img);
