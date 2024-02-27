@@ -45,71 +45,6 @@ let board = [
   ],
 ];
 
-// let board = [
-//   [
-//     { id: "R", color: "black", moved: false },
-//     { id: "N", color: "black", moved: false },
-//     { id: "B", color: "black", moved: false },
-//     { id: "Q", color: "black", moved: false },
-//     false,
-//     { id: "B", color: "black", moved: false },
-//     false,
-//     { id: "R", color: "black", moved: false },
-//   ],
-//   [
-//     { id: "P", color: "black", moved: false },
-//     { id: "P", color: "black", moved: false },
-//     { id: "P", color: "black", moved: false },
-//     { id: "P", color: "black", moved: false },
-//     { id: "N", color: "black", moved: true },
-//     { id: "P", color: "black", moved: false },
-//     { id: "P", color: "black", moved: false },
-//     { id: "P", color: "black", moved: false },
-//   ],
-//   [false, false, false, false, false, false, false, false],
-//   [
-//     false,
-//     false,
-//     false,
-//     { id: "K", color: "white", moved: true },
-//     { id: "P", color: "black", moved: true },
-//     { id: "K", color: "black", moved: true },
-//     false,
-//     false,
-//   ],
-//   [
-//     false,
-//     false,
-//     false,
-//     { id: "P", color: "white", moved: true },
-//     false,
-//     false,
-//     false,
-//     false,
-//   ],
-//   [false, false, false, false, false, false, false, false],
-//   [
-//     { id: "P", color: "white", moved: false },
-//     { id: "P", color: "white", moved: false },
-//     { id: "P", color: "white", moved: false },
-//     false,
-//     { id: "P", color: "white", moved: false },
-//     { id: "P", color: "white", moved: false },
-//     { id: "P", color: "white", moved: false },
-//     { id: "P", color: "white", moved: false },
-//   ],
-//   [
-//     { id: "R", color: "white", moved: false },
-//     { id: "N", color: "white", moved: false },
-//     { id: "B", color: "white", moved: false },
-//     { id: "Q", color: "white", moved: false },
-//     false,
-//     { id: "B", color: "white", moved: false },
-//     { id: "N", color: "white", moved: false },
-//     { id: "R", color: "white", moved: false },
-//   ],
-// ];
-
 let displayedBoard = JSON.parse(JSON.stringify(board));
 
 const kingsPositions = {
@@ -596,6 +531,10 @@ const move = (from, to) => {
       }
 
       if (isAttacked(kingsPositions[turn])) {
+        if (piece.id === "K") {
+          kingsPositions[turn].x = from.x;
+          kingsPositions[turn].y = from.y;
+        }
         board = JSON.parse(JSON.stringify(displayedBoard));
       } else {
         turn = turn === "white" ? "black" : "white";
