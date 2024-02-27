@@ -531,10 +531,6 @@ const move = (from, to) => {
       }
 
       if (isAttacked(kingsPositions[turn])) {
-        if (piece.id === "K") {
-          kingsPositions[turn].x = from.x;
-          kingsPositions[turn].y = from.y;
-        }
         board = JSON.parse(JSON.stringify(displayedBoard));
       } else {
         turn = turn === "white" ? "black" : "white";
