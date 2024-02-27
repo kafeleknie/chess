@@ -595,8 +595,13 @@ const move = (from, to) => {
         kingsPositions[turn].y = to.y;
       }
 
-      if (isAttacked(kingsPositions[turn])) {
-        board = JSON.parse(JSON.stringify(displayedBoard));
+        if (isAttacked(kingsPositions[turn])) {
+          board = JSON.parse(JSON.stringify(displayedBoard));
+          if (piece.id === "K") {
+          kingsPositions[turn].x = from.x;
+          kingsPositions[turn].y = from.y;
+        }
+          
       } else {
         turn = turn === "white" ? "black" : "white";
         if (deadPiece) piecesCount[turn][deadPiece.id]--;
